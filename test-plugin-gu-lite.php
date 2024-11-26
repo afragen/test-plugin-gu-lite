@@ -7,6 +7,7 @@
  * Author: Andy Fragen
  * License: MIT
  * GitHub Plugin URI: https://github.com/afragen/test-plugin-gu-lite/
+ * Primary Branch: main
  * Requires WP: 6.6
  * Requires PHP: 7.4
  */
