@@ -1,1 +1,1 @@
-# test-plugin-gu-lite
+Just an empty test plugin.

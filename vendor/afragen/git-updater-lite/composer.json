@@ -1,0 +1,36 @@
+{
+  "name": "afragen/git-updater-lite",
+  "description": "A simple class to integrate with Git Updater for standalone plugin/theme updates.",
+  "version": "1.0.0",
+  "type": "library",
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "theme",
+    "updater"
+  ],
+  "license": "MIT",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/afragen/git-updater-lite"
+    }
+  ],
+  "authors": [
+    {
+      "name": "Andy Fragen",
+      "email": "andy@thefragens.com",
+      "homepage": "https://github.com/afragen/git-updater-lite",
+      "role": "Developer"
+    }
+  ],
+  "prefer-stable": true,
+  "require": {
+    "php": ">=7.4"
+  },
+  "autoload": {
+    "classmap": [
+      "Lite.php"
+    ]
+  }
+}

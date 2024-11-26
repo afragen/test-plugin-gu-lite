@@ -1,0 +1,70 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "e2a7910cdc7d95d3f217acfd37ac66df",
+    "packages": [
+        {
+            "name": "afragen/git-updater-lite",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/afragen/git-updater-lite.git",
+                "reference": "aaada224e60530ea2ba1613b53222497fab73550"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/aaada224e60530ea2ba1613b53222497fab73550",
+                "reference": "aaada224e60530ea2ba1613b53222497fab73550",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "Lite.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andy Fragen",
+                    "email": "andy@thefragens.com",
+                    "homepage": "https://github.com/afragen/git-updater-lite",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple class to integrate with Git Updater for standalone plugin/theme updates.",
+            "keywords": [
+                "plugin",
+                "theme",
+                "updater",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/afragen/git-updater-lite/issues",
+                "source": "https://github.com/afragen/git-updater-lite/tree/main"
+            },
+            "time": "2024-11-26T19:07:20+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "afragen/git-updater-lite": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}

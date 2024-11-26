@@ -1,0 +1,58 @@
+{
+    "packages": [
+        {
+            "name": "afragen/git-updater-lite",
+            "version": "dev-main",
+            "version_normalized": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/afragen/git-updater-lite.git",
+                "reference": "aaada224e60530ea2ba1613b53222497fab73550"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/aaada224e60530ea2ba1613b53222497fab73550",
+                "reference": "aaada224e60530ea2ba1613b53222497fab73550",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "time": "2024-11-26T19:07:20+00:00",
+            "default-branch": true,
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "Lite.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andy Fragen",
+                    "email": "andy@thefragens.com",
+                    "homepage": "https://github.com/afragen/git-updater-lite",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple class to integrate with Git Updater for standalone plugin/theme updates.",
+            "keywords": [
+                "plugin",
+                "theme",
+                "updater",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/afragen/git-updater-lite/issues",
+                "source": "https://github.com/afragen/git-updater-lite/tree/main"
+            },
+            "install-path": "../afragen/git-updater-lite"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}
