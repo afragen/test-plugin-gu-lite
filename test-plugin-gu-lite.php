@@ -13,4 +13,4 @@
  */
 require_once __DIR__ . '/vendor/autoload.php';
 ( new \Fragen\Git_Updater\Lite( __FILE__ ) )
-    ->run( 'http://thefragens.net/wp-json/git-updater/v1/plugins-api/?slug=test-plugin-gu-lite' );
+    ->run( 'https://thefragens.net/wp-json/git-updater/v1/plugins-api/?slug=test-plugin-gu-lite' );
