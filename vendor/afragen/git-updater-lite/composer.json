@@ -26,11 +26,7 @@
   ],
   "prefer-stable": true,
   "require": {
-    "php": ">=7.4"
-  },
-  "autoload": {
-    "classmap": [
-      "Lite.php"
-    ]
+    "php": ">=7.4",
+    "afragen/autoloader": "^3"
   }
 }
