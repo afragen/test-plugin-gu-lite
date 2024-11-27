@@ -45,26 +45,37 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		}
 
 		/**
-		 * Get API data and load hooks.
+		 * Get API data.
 		 *
 		 * @param string $url URI to JSON response of API data.
 		 *
-		 * @return void
+		 * @return void|\WP_Error
 		 */
 		public function run( string $url ) {
 			$response = get_site_transient( "git-updater-lite_{$this->file}" );
 			if ( ! $response ) {
 				$response = wp_remote_get( $url );
 				if ( is_wp_error( $response ) ) {
-					return;
+					return $response;
 				}
 				set_site_transient( "git-updater-lite_{$this->file}", $response, 6 * \HOUR_IN_SECONDS );
 			}
 
-			$this->api_data       = json_decode( wp_remote_retrieve_body( $response ) );
+			$this->api_data = json_decode( wp_remote_retrieve_body( $response ) );
+			if ( null === $this->api_data ) {
+				return new \WP_Error( 'non_json_api_response', 'Poorly formed JSON', $response );
+			}
 			$this->api_data->file = $this->file;
-			$type                 = $this->api_data->type;
+			$this->load_hooks();
+		}
 
+		/**
+		 * Load hooks.
+		 *
+		 * @return void
+		 */
+		public function load_hooks() {
+			$type = $this->api_data->type;
 			add_filter( 'upgrader_source_selection', array( $this, 'upgrader_source_selection' ), 10, 4 );
 			add_filter( "{$type}s_api", array( $this, 'repo_api_details' ), 99, 3 );
 			add_filter( "site_transient_update_{$type}s", array( $this, 'update_site_transient' ), 15, 1 );
@@ -136,9 +147,9 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		}
 
 		/**
-		 * Hook into site_transient_update_plugins to update from GitHub.
+		 * Hook into site_transient_update_{plugins|themes} to update from GitHub.
 		 *
-		 * @param \stdClass $transient Plugin update transient.
+		 * @param \stdClass $transient Plugin|Theme update transient.
 		 *
 		 * @return \stdClass
 		 */
