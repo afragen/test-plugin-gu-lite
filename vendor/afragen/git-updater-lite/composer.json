@@ -26,7 +26,11 @@
   ],
   "prefer-stable": true,
   "require": {
-    "php": ">=7.4",
-    "afragen/autoloader": "^3"
+    "php": ">=7.4"
+  },
+  "autoload": {
+    "files": [
+      "Lite.php"
+    ]
   }
 }

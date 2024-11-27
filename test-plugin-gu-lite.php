@@ -19,6 +19,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
- require_once __DIR__ . '/vendor/afragen/autoloader/Autoloader.php';
- new \Fragen\Autoloader( [], [ '\\Fragen\\Git_Updater\\Lite' => __DIR__ . '/vendor/afragen/git-updater-lite/Lite.php' ] ); ( new \Fragen\Git_Updater\Lite( __FILE__ ) )
+ require_once __DIR__ . '/vendor/autoload.php';
+( new \Fragen\Git_Updater\Lite( __FILE__ ) )
     ->run( 'https://thefragens.net/wp-json/git-updater/v1/plugins-api/?slug=test-plugin-gu-lite' );

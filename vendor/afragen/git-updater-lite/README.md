@@ -36,9 +36,8 @@ Add via composer. `composer require afragen/git-updater-lite:^1`
 Add the following to your plugin or theme where `<URI>` is the REST endpoint.
 
 ```php
-require_once __DIR__ . '/vendor/afragen/autoloader/Autoloader.php';
-new \Fragen\Autoloader( [], [ '\\Fragen\\Git_Updater\\Lite' => __DIR__ . '/vendor/afragen/git-updater-lite/Lite.php' ] );
-( new \Fragen\Git_Updater\Lite( __FILE__ ) )->run(`<URI>`);
+require_once __DIR__ . '/vendor/autoload.php';
+( new \Fragen\Git_Updater\Lite( __FILE__ ) )->run('<URI>');
 ```
 
 An example integrated plugin is here, https://github.com/afragen/test-plugin-gu-lite

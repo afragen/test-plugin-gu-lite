@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInite2a7910cdc7d95d3f217acfd37ac66df
 {
+    public static $files = array (
+        '8fe37ce289a3f7ae3f3f3250a1551163' => __DIR__ . '/..' . '/afragen/git-updater-lite/Lite.php',
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
