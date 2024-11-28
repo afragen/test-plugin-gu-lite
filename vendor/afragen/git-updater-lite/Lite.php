@@ -79,6 +79,15 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 			add_filter( 'upgrader_source_selection', array( $this, 'upgrader_source_selection' ), 10, 4 );
 			add_filter( "{$type}s_api", array( $this, 'repo_api_details' ), 99, 3 );
 			add_filter( "site_transient_update_{$type}s", array( $this, 'update_site_transient' ), 15, 1 );
+
+			// Load hook for adding authentication headers for download packages.
+			add_filter(
+				'upgrader_pre_download',
+				function () {
+					add_filter( 'http_request_args', array( $this, 'add_auth_header' ), 15, 2 );
+					return false; // upgrader_pre_download filter default return value.
+				}
+			);
 		}
 
 		/**
@@ -190,6 +199,21 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 			}
 
 			return $transient;
+		}
+
+		/**
+		 * Add auth header for download package.
+		 *
+		 * @param array  $args Array of http args.
+		 * @param string $url Download URL.
+		 *
+		 * @return array
+		 */
+		public function add_auth_header( $args, $url ) {
+			if ( str_contains( $url, $this->api_data->slug ) ) {
+				$args['headers']['Authorization'] = $this->api_data->auth_header->headers->Authorization;
+			}
+			return $args;
 		}
 	}
 }
