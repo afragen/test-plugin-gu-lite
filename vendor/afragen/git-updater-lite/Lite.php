@@ -210,7 +210,9 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		 * @return array
 		 */
 		public function add_auth_header( $args, $url ) {
-			if ( str_contains( $url, $this->api_data->slug ) ) {
+			if ( property_exists( $this->api_data, 'auth_header' )
+				&& str_contains( $url, $this->api_data->slug )
+			) {
 				$args['headers']['Authorization'] = $this->api_data->auth_header->headers->Authorization;
 			}
 			return $args;
