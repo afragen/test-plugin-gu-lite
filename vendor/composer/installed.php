@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '5f6ef5389f8db510312be43f0b3a3d73c18e6a85',
+        'reference' => '667eab77200454290241dc38698e2209db43de9a',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '5f6ef5389f8db510312be43f0b3a3d73c18e6a85',
+            'reference' => '667eab77200454290241dc38698e2209db43de9a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -22,7 +22,7 @@
         'afragen/git-updater-lite' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '46d19314b9e323a0d8dd3c4ac7b80388c7880a7b',
+            'reference' => 'adcb72f9af0ec73a31f16958d4a96c5bc10f433a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../afragen/git-updater-lite',
             'aliases' => array(

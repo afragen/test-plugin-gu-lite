@@ -103,15 +103,13 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		public function upgrader_source_selection( string $source, string $remote_source, \Plugin_Upgrader|\Theme_Upgrader $upgrader, $hook_extra = null ) {
 			global $wp_filesystem;
 
+			$new_source = $source;
+
 			// Exit if installing.
 			if ( isset( $hook_extra['action'] ) && 'install' === $hook_extra['action'] ) {
 				return $source;
 			}
 
-			// Exit if no standard upgrader.
-			if ( ! ( $upgrader instanceof \Plugin_Upgrader || $upgrader instanceof \Theme_Upgrader ) ) {
-				return new \WP_Error( 'non-standard-upgrader', 'No Plugin_Ugrader or Theme_Upgrader', $upgrader );
-			}
 
 			// Rename plugins.
 			if ( $upgrader instanceof \Plugin_Upgrader ) {
