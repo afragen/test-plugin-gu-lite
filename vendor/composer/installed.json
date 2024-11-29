@@ -7,18 +7,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/git-updater-lite.git",
-                "reference": "76f8c459b6877b34ad0fc744f8b7498bda4a9407"
+                "reference": "46d19314b9e323a0d8dd3c4ac7b80388c7880a7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/76f8c459b6877b34ad0fc744f8b7498bda4a9407",
-                "reference": "76f8c459b6877b34ad0fc744f8b7498bda4a9407",
+                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/46d19314b9e323a0d8dd3c4ac7b80388c7880a7b",
+                "reference": "46d19314b9e323a0d8dd3c4ac7b80388c7880a7b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.4"
             },
-            "time": "2024-11-28T21:03:35+00:00",
+            "time": "2024-11-29T20:57:35+00:00",
             "default-branch": true,
             "type": "library",
             "installation-source": "dist",
