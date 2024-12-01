@@ -13,7 +13,7 @@ A simple standalone library to enable automatic updates to your git hosted WordP
 
 This library was designed to be added to your git hosted plugin or theme to enable standalone updates. 
 
-You must have a publicaly reachable site that will be used for dynamically retrieving the update API data.
+You must have a publicly reachable site that will be used for dynamically retrieving the update API data.
 
 * [Git Updater](https://git-updater.com) is required on a site where all of the release versions of your plugins and themes are installed.
 * All of your plugins/themes **must** be integrated with Git Updater.
