@@ -2,23 +2,23 @@
     "packages": [
         {
             "name": "afragen/git-updater-lite",
-            "version": "1.0.0",
-            "version_normalized": "1.0.0.0",
+            "version": "1.0.1",
+            "version_normalized": "1.0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/git-updater-lite.git",
-                "reference": "0c51501dc59e6989601485035b7b8d39fb372aff"
+                "reference": "bec8ddb0aadd528216674d983f869e7d0a5ae5a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/0c51501dc59e6989601485035b7b8d39fb372aff",
-                "reference": "0c51501dc59e6989601485035b7b8d39fb372aff",
+                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/bec8ddb0aadd528216674d983f869e7d0a5ae5a3",
+                "reference": "bec8ddb0aadd528216674d983f869e7d0a5ae5a3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4"
+                "php": ">=8.0"
             },
-            "time": "2024-12-01T06:19:14+00:00",
+            "time": "2024-12-07T06:16:14+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -47,7 +47,7 @@
             ],
             "support": {
                 "issues": "https://github.com/afragen/git-updater-lite/issues",
-                "source": "https://github.com/afragen/git-updater-lite/tree/1.0.0"
+                "source": "https://github.com/afragen/git-updater-lite/tree/1.0.1"
             },
             "install-path": "../afragen/git-updater-lite"
         }

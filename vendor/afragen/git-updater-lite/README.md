@@ -3,7 +3,7 @@
 * Contributors: [Andy Fragen](https://github.com/afragen)
 * Tags: plugin, theme, updater, git-updater
 * Requires at least: 6.6
-* Requires PHP: 7.4
+* Requires PHP: 8.0
 * Donate link: <https://thefragens.com/git-updater-donate>
 * License: MIT
 

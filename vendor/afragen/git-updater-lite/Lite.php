@@ -34,9 +34,9 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		 * Constructor.
 		 */
 		public function __construct( string $file_path ) {
-			if ( \str_contains( $file_path, 'functions.php' ) ) {
+			if ( str_contains( $file_path, 'functions.php' ) ) {
 				$file_path  = dirname( $file_path ) . '/style.css';
-				$this->file = \basename( dirname( $file_path ) );
+				$this->file = basename( dirname( $file_path ) );
 			} else {
 				$this->file = basename( dirname( $file_path ) ) . '/' . basename( $file_path );
 			}
@@ -167,7 +167,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		 */
 		public function update_site_transient( $transient ) {
 			// needed to fix PHP 7.4 warning.
-			if ( ! \is_object( $transient ) ) {
+			if ( ! is_object( $transient ) ) {
 				$transient = new \stdClass();
 			}
 
