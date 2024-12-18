@@ -33,7 +33,7 @@ Add via composer. `composer require afragen/git-updater-lite:^1`
 Add the following to your plugin or theme where `<URI>` is the REST endpoint.
 
 ```php
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/afragen/git-updater-lite/Lite.php';
 ( new \Fragen\Git_Updater\Lite( __FILE__ ) )->run('<URI>');
 ```
 
