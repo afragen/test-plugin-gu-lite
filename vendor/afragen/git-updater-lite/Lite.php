@@ -70,7 +70,8 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				* as AWS sets 5 minute timeout for release asset redirect.
 				* Otherwise use 6 hours.
 				*/
-				$timeout = $this->api_data->release_asset ? 300 : 6 * \HOUR_IN_SECONDS;
+				$aws     = str_contains( $this->api_data->download_link, 's3.amazonaws.com' );
+				$timeout = $this->api_data->release_asset && $aws ? 300 : 6 * \HOUR_IN_SECONDS;
 
 				set_site_transient( "git-updater-lite_{$this->file}", $this->api_data, $timeout );
 			} else {
