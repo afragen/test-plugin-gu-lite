@@ -21,8 +21,12 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 	 */
 	class Lite {
 
+		// phpcs:disable Generic.Commenting.DocComment.MissingShort
 		/** @var string */
 		protected $file;
+
+		/** @var string */
+		protected $slug;
 
 		/** @var string */
 		protected $local_version;
@@ -30,8 +34,14 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		/** @var \stdClass */
 		protected $api_data;
 
+		/** @var string */
+		protected $update_server;
+		// phpcs:enable
+
 		/**
 		 * Constructor.
+		 *
+		 * @param string $file_path File path of plugin/theme.
 		 */
 		public function __construct( string $file_path ) {
 			if ( str_contains( $file_path, 'functions.php' ) ) {
@@ -40,18 +50,21 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 			} else {
 				$this->file = basename( dirname( $file_path ) ) . '/' . basename( $file_path );
 			}
-
+			$this->slug          = dirname( $this->file );
 			$this->local_version = get_file_data( $file_path, array( 'Version' => 'Version' ) )['Version'];
+			$this->update_server = apply_filters( 'gul_update_server', null );
 		}
 
 		/**
 		 * Get API data.
 		 *
-		 * @param string $url URI to JSON response of API data.
-		 *
 		 * @return void|\WP_Error
 		 */
-		public function run( string $url ) {
+		public function run() {
+			if ( null === $this->update_server ) {
+				return new \WP_Error( 'no_domain', 'No update server domain' );
+			}
+			$url      = "$this->update_server/wp-json/git-updater/v1/update-api/?slug=$this->slug";
 			$response = get_site_transient( "git-updater-lite_{$this->file}" );
 			if ( ! $response ) {
 				$response = wp_remote_get( $url );
@@ -60,7 +73,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				}
 
 				$this->api_data = (object) json_decode( wp_remote_retrieve_body( $response ), true );
-				if ( null === $this->api_data ) {
+				if ( null === $this->api_data || property_exists( $this->api_data, 'error' ) ) {
 					return new \WP_Error( 'non_json_api_response', 'Poorly formed JSON', $response );
 				}
 				$this->api_data->file = $this->file;
@@ -75,6 +88,9 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 
 				set_site_transient( "git-updater-lite_{$this->file}", $this->api_data, $timeout );
 			} else {
+				if ( property_exists( $response, 'error' ) ) {
+					return new \WP_Error( 'repo-no-exist', 'Specified repo does not exist' );
+				}
 				$this->api_data = $response;
 			}
 
@@ -221,7 +237,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		 * Add auth header for download package.
 		 *
 		 * @param array  $args Array of http args.
-		 * @param string $url Download URL.
+		 * @param string $url  Download URL.
 		 *
 		 * @return array
 		 */
