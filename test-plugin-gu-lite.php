@@ -9,7 +9,7 @@
  * GitHub Plugin URI: https://github.com/afragen/test-plugin-gu-lite/
  * Primary Branch: main
  * Requires WP: 6.6
- * Requires PHP: 7.4
+ * Requires PHP: 8.0
  */
 
  /**
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 add_filter( 'gul_update_server', function () {
-    return 'https://thefragens.net';
+    return 'https://git-updater.com';
 });
 require_once __DIR__ . '/vendor/afragen/git-updater-lite/Lite.php';
 ( new \Fragen\Git_Updater\Lite( __FILE__ ) )->run();

@@ -19,7 +19,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 	/**
 	 * Class Lite
 	 */
-	class Lite {
+	final class Lite {
 
 		// phpcs:disable Generic.Commenting.DocComment.MissingShort
 		/** @var string */

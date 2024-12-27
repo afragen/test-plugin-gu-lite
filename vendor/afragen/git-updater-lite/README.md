@@ -33,12 +33,12 @@ Add via composer. `composer require afragen/git-updater-lite:^1`
 Add the following to your plugin or theme. Where `<update server URI>` is the domain to the update server, eg `https://git-updater.com`.
 
 ```php
+require_once __DIR__ . '/vendor/autoload.php';
+
 add_filter( 'gul_update_server', function () {
     return '<update server URI>';
 });
-
-require_once __DIR__ . '/vendor/afragen/git-updater-lite/Lite.php';
-( new \Fragen\Git_Updater\Lite( __FILE__ ) )->run('<URI>');
+( new \Fragen\Git_Updater\Lite( __FILE__ ) )->run();
 ```
 
 An example integrated plugin is here, https://github.com/afragen/test-plugin-gu-lite
