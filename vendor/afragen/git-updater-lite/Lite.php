@@ -58,9 +58,19 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		/**
 		 * Get API data.
 		 *
+		 * @global string $pagenow Current page.
 		 * @return void|\WP_Error
 		 */
 		public function run() {
+			global $pagenow;
+
+			// Only run on the following pages.
+			$pages            = array( 'update-core.php', 'plugins.php', 'themes.php' );
+			$autoupdate_pages = array( 'admin-ajax.php', 'index.php', 'wp-cron.php' );
+			if ( ! in_array( $pagenow, array_merge( $pages, $autoupdate_pages ) ) ) {
+				return;
+			}
+
 			if ( null === $this->update_server ) {
 				return new \WP_Error( 'no_domain', 'No update server domain' );
 			}
@@ -79,14 +89,14 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				$this->api_data->file = $this->file;
 
 				/*
-				* Set transient for 5 minutes if using a release asset
-				* as AWS sets 5 minute timeout for release asset redirect.
-				* Otherwise use 6 hours.
+				* Set transient for 5 minutes as AWS sets 5 minute timeout
+				* for release asset redirect.
+				*
+				* Set limited timeout so wp_remote_get() not hit as frequently.
+				* wp_remote_post() for plugin/theme check can run on every pageload
+				* for certain pages.
 				*/
-				$aws     = str_contains( $this->api_data->download_link, 's3.amazonaws.com' );
-				$timeout = $this->api_data->release_asset && $aws ? 300 : 6 * \HOUR_IN_SECONDS;
-
-				set_site_transient( "git-updater-lite_{$this->file}", $this->api_data, $timeout );
+				set_site_transient( "git-updater-lite_{$this->file}", $this->api_data, 5 * \MINUTE_IN_SECONDS );
 			} else {
 				if ( property_exists( $response, 'error' ) ) {
 					return new \WP_Error( 'repo-no-exist', 'Specified repo does not exist' );
