@@ -67,7 +67,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 			// Only run on the following pages.
 			$pages            = array( 'update-core.php', 'plugins.php', 'themes.php' );
 			$autoupdate_pages = array( 'admin-ajax.php', 'index.php', 'wp-cron.php' );
-			if ( ! in_array( $pagenow, array_merge( $pages, $autoupdate_pages ) ) ) {
+			if ( ! in_array( $pagenow, array_merge( $pages, $autoupdate_pages ), true ) ) {
 				return;
 			}
 
