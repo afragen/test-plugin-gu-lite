@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/git-updater-lite.git",
-                "reference": "5648abbacb4f442df9e3e42ec7680ba456f31338"
+                "reference": "3078273388e64bb810c60763aa2069e20a6bd92b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/5648abbacb4f442df9e3e42ec7680ba456f31338",
-                "reference": "5648abbacb4f442df9e3e42ec7680ba456f31338",
+                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/3078273388e64bb810c60763aa2069e20a6bd92b",
+                "reference": "3078273388e64bb810c60763aa2069e20a6bd92b",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                 "issues": "https://github.com/afragen/git-updater-lite/issues",
                 "source": "https://github.com/afragen/git-updater-lite/tree/1.4.0"
             },
-            "time": "2024-12-29T20:50:00+00:00"
+            "time": "2024-12-29T22:28:32+00:00"
         }
     ],
     "packages-dev": [],
