@@ -17,7 +17,7 @@ You must have a publicly reachable site that will be used for dynamically retrie
 
 * [Git Updater](https://git-updater.com) is required on a site where all of the release versions of your plugins and themes are installed.
 * All of your plugins/themes **must** be integrated with Git Updater.
-* You must be using Git Updater v12.8.0 or better. 
+* You must be using Git Updater v12.9.0 or better. 
 
 Git Updater is capable of returning a [REST endpoint](https://git-updater.com/knowledge-base/remote-management-restful-endpoints/#articleTOC_3/) containing the `plugins_api()` or `themes_api()` data for your plugin/theme. You will pass this endpoint during the integration.
 
@@ -33,8 +33,7 @@ Add via composer. `composer require afragen/git-updater-lite:^1`
 Add the following to your plugin or theme. Where `<update server URI>` is the domain to the update server, eg `https://git-updater.com`.
 
 ```php
-require_once __DIR__ . '/vendor/autoload.php';
-
+require_once __DIR__ . '/vendor/afragen/git-updater-lite/Lite.php';
 add_filter( 'gul_update_server', function () {
     return '<update server URI>';
 });
