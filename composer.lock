@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "afragen/git-updater-lite",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/git-updater-lite.git",
-                "reference": "a3231d659c090a3584dcd11111e9f55ad4a6fd7f"
+                "reference": "e778faf919e39a349b87f9dff017a378a21cec91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/a3231d659c090a3584dcd11111e9f55ad4a6fd7f",
-                "reference": "a3231d659c090a3584dcd11111e9f55ad4a6fd7f",
+                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/e778faf919e39a349b87f9dff017a378a21cec91",
+                "reference": "e778faf919e39a349b87f9dff017a378a21cec91",
                 "shasum": ""
             },
             "require": {
@@ -50,9 +50,9 @@
             ],
             "support": {
                 "issues": "https://github.com/afragen/git-updater-lite/issues",
-                "source": "https://github.com/afragen/git-updater-lite/tree/1.4.1"
+                "source": "https://github.com/afragen/git-updater-lite/tree/1.4.2"
             },
-            "time": "2025-01-03T18:34:20+00:00"
+            "time": "2025-01-03T21:36:32+00:00"
         }
     ],
     "packages-dev": [],
