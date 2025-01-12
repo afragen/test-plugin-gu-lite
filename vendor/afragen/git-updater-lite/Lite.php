@@ -44,13 +44,15 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		 * @param string $file_path File path of plugin/theme.
 		 */
 		public function __construct( string $file_path ) {
-			if ( str_contains( $file_path, 'functions.php' ) ) {
-				$file_path  = dirname( $file_path ) . '/style.css';
-				$this->file = basename( dirname( $file_path ) );
+			$this->slug = basename( dirname( $file_path ) );
+
+			if ( str_ends_with( $file_path, 'functions.php' ) ) {
+				$this->file = $this->slug . '/style.css';
+				$file_path  = dirname( $file_path ) . '.style.css';
 			} else {
-				$this->file = basename( dirname( $file_path ) ) . '/' . basename( $file_path );
+				$this->file = $this->slug . '/' . basename( $file_path );
 			}
-			$this->slug          = dirname( $this->file );
+
 			$this->local_version = get_file_data( $file_path, array( 'Version' => 'Version' ) )['Version'];
 			$this->update_server = apply_filters( 'gul_update_server', null );
 		}
