@@ -48,7 +48,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 
 			if ( str_ends_with( $file_path, 'functions.php' ) ) {
 				$this->file = $this->slug . '/style.css';
-				$file_path  = dirname( $file_path ) . '.style.css';
+				$file_path  = dirname( $file_path ) . '/style.css';
 			} else {
 				$this->file = $this->slug . '/' . basename( $file_path );
 			}
@@ -120,6 +120,9 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 			add_filter( 'upgrader_source_selection', array( $this, 'upgrader_source_selection' ), 10, 4 );
 			add_filter( "{$type}s_api", array( $this, 'repo_api_details' ), 99, 3 );
 			add_filter( "site_transient_update_{$type}s", array( $this, 'update_site_transient' ), 15, 1 );
+			if ( ! is_multisite() ) {
+				add_filter( 'wp_prepare_themes_for_js', array( $this, 'customize_theme_update_html' ) );
+			}
 
 			// Load hook for adding authentication headers for download packages.
 			add_filter(
@@ -215,7 +218,8 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 
 			$response = array(
 				'slug'                => $this->api_data->slug,
-				$this->api_data->type => $this->api_data->file,
+				$this->api_data->type => 'theme' === $this->api_data->type ? $this->api_data->slug : $this->api_data->file,
+				'url'                 => isset( $this->api_data->url ) ? $this->api_data->url : $this->api_data->slug,
 				'icons'               => (array) $this->api_data->icons,
 				'banners'             => $this->api_data->banners,
 				'branch'              => $this->api_data->branch,
@@ -224,18 +228,22 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				'requires'            => $this->api_data->requires,
 				'requires_php'        => $this->api_data->requires_php,
 			);
+			if ( 'theme' === $this->api_data->type ) {
+				$response['theme_uri'] = $response['url'];
+			}
 
 			if ( version_compare( $this->api_data->version, $this->local_version, '>' ) ) {
-				$response_api_checked                         = array(
+				$response_api_checked        = array(
 					'new_version'  => $this->api_data->version,
 					'package'      => $this->api_data->download_link,
 					'tested'       => $this->api_data->tested,
 					'requires'     => $this->api_data->requires,
 					'requires_php' => $this->api_data->requires_php,
 				);
-				$response                                     = array_merge( $response, $response_api_checked );
-				$response                                     = 'plugin' === $this->api_data->type ? (object) $response : $response;
-				$transient->response[ $this->api_data->file ] = $response;
+				$response                    = array_merge( $response, $response_api_checked );
+				$response                    = 'plugin' === $this->api_data->type ? (object) $response : $response;
+				$key                         = 'plugin' === $this->api_data->type ? $this->api_data->file : $this->api_data->slug;
+				$transient->response[ $key ] = $response;
 			} else {
 				$response = 'plugin' === $this->api_data->type ? (object) $response : $response;
 
@@ -261,6 +269,125 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				$args = array_merge( $args, $this->api_data->auth_header );
 			}
 			return $args;
+		}
+
+
+		/**
+		 * Call theme messaging for single site installation.
+		 *
+		 * @author Seth Carstens
+		 *
+		 * @param array $prepared_themes Array of prepared themes.
+		 *
+		 * @return mixed
+		 */
+		public function customize_theme_update_html( $prepared_themes ) {
+			$theme = $this->api_data;
+
+			if ( 'theme' !== $theme->type ) {
+				return $prepared_themes;
+			}
+
+			if ( ! empty( $prepared_themes[ $theme->slug ]['hasUpdate'] ) ) {
+				$prepared_themes[ $theme->slug ]['update'] = $this->append_theme_actions_content( $theme );
+			} else {
+				$prepared_themes[ $theme->slug ]['description'] .= $this->append_theme_actions_content( $theme );
+			}
+
+			return $prepared_themes;
+		}
+
+		/**
+		 * Create theme update messaging for single site installation.
+		 *
+		 * @author Seth Carstens
+		 *
+		 * @access protected
+		 *
+		 * @param \stdClass $theme Theme object.
+		 *
+		 * @return string (content buffer)
+		 */
+		protected function append_theme_actions_content( $theme ) {
+			$details_url       = esc_attr(
+				add_query_arg(
+					array(
+						'tab'       => 'theme-information',
+						'theme'     => $theme->slug,
+						'TB_iframe' => 'true',
+						'width'     => 270,
+						'height'    => 400,
+					),
+					self_admin_url( 'theme-install.php' )
+				)
+			);
+			$nonced_update_url = wp_nonce_url(
+				esc_attr(
+					add_query_arg(
+						array(
+							'action' => 'upgrade-theme',
+							'theme'  => rawurlencode( $theme->slug ),
+						),
+						self_admin_url( 'update.php' )
+					)
+				),
+				'upgrade-theme_' . $theme->slug
+			);
+
+			$current = get_site_transient( 'update_themes' );
+
+			/**
+			 * Display theme update links.
+			 */
+			ob_start();
+			if ( isset( $current->response[ $theme->slug ] ) ) {
+				?>
+			<p>
+				<strong>
+					<?php
+					printf(
+						/* translators: %s: theme name */
+						esc_html__( 'There is a new version of %s available.', 'git-updater-lite' ),
+						esc_attr( $theme->name )
+					);
+						printf(
+							' <a href="%s" class="thickbox open-plugin-details-modal" title="%s">',
+							esc_url( $details_url ),
+							esc_attr( $theme->name )
+						);
+					if ( ! empty( $current->response[ $theme->slug ]['package'] ) ) {
+						printf(
+						/* translators: 1: version number, 2: closing anchor tag, 3: update URL */
+							esc_html__( 'View version %1$s details%2$s or %3$supdate now%2$s.', 'git-updater-lite' ),
+							$theme->remote_version = isset( $theme->remote_version ) ? esc_attr( $theme->remote_version ) : null,
+							'</a>',
+							sprintf(
+							/* translators: %s: theme name */
+								'<a aria-label="' . esc_html__( 'Update %s now', 'git-updater-lite' ) . '" id="update-theme" data-slug="' . esc_attr( $theme->slug ) . '" href="' . esc_url( $nonced_update_url ) . '">',
+								esc_attr( $theme->name )
+							)
+						);
+					} else {
+						printf(
+						/* translators: 1: version number, 2: closing anchor tag, 3: update URL */
+							esc_html__( 'View version %1$s details%2$s.', 'git-updater-lite' ),
+							$theme->remote_version = isset( $theme->remote_version ) ? esc_attr( $theme->remote_version ) : null,
+							'</a>'
+						);
+						printf(
+						/* translators: %s: opening/closing paragraph and italic tags */
+							esc_html__( '%1$sAutomatic update is unavailable for this theme.%2$s', 'git-updater-lite' ),
+							'<p><i>',
+							'</i></p>'
+						);
+					}
+					?>
+				</strong>
+			</p>
+				<?php
+			}
+
+			return trim( ob_get_clean(), '1' );
 		}
 	}
 }
