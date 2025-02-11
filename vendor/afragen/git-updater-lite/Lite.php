@@ -53,8 +53,15 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				$this->file = $this->slug . '/' . basename( $file_path );
 			}
 
-			$this->local_version = get_file_data( $file_path, array( 'Version' => 'Version' ) )['Version'];
-			$this->update_server = apply_filters( 'gul_update_server', null );
+			$file_data           = get_file_data(
+				$file_path,
+				array(
+					'Version'   => 'Version',
+					'UpdateURI' => 'Update URI',
+				)
+			);
+			$this->local_version = $file_data['Version'];
+			$this->update_server = $file_data['UpdateURI'];
 		}
 
 		/**
@@ -86,7 +93,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				}
 
 				$this->api_data = (object) json_decode( wp_remote_retrieve_body( $response ), true );
-				if ( null === $this->api_data || property_exists( $this->api_data, 'error' ) ) {
+				if ( null === $this->api_data || empty( (array) $this->api_data ) || property_exists( $this->api_data, 'error' ) ) {
 					return new \WP_Error( 'non_json_api_response', 'Poorly formed JSON', $response );
 				}
 				$this->api_data->file = $this->file;

@@ -11,6 +11,8 @@ A simple standalone library to enable automatic updates to your git hosted WordP
 
 ## Description
 
+**This is version 2.0.0 and contains a breaking change from 1.5.x.**
+
 This library was designed to be added to your git hosted plugin or theme to enable standalone updates. 
 
 You must have a publicly reachable site that will be used for dynamically retrieving the update API data.
@@ -28,18 +30,42 @@ The REST endpoint format is as follows.
 
 ## Installation
 
-Add via composer. `composer require afragen/git-updater-lite:^1`
+Add via composer. `composer require afragen/git-updater-lite:^2`
 
-Add the following to your plugin or theme. Where `<update server URI>` is the domain to the update server, eg `https://git-updater.com`.
+* Add the `Update URI: <update server URI>` header to your plugin or theme headers. Where `<update server URI>` is the domain to the update server, eg `https://git-updater.com`.
+
+* Add the following code to your plugin file or theme's functions.php file.
 
 ```php
 require_once __DIR__ . '/vendor/afragen/git-updater-lite/Lite.php';
-add_filter( 'gul_update_server', function () {
-    return '<update server URI>';
-});
 ( new \Fragen\Git_Updater\Lite( __FILE__ ) )->run();
 ```
 
 An example integrated plugin is here, https://github.com/afragen/test-plugin-gu-lite
+
+```php
+<?php
+/**
+ * Plugin Name: Test Plugin Git Updater Lite
+ * Plugin URI: https://github.com/afragen/test-plugin-gu-lite/
+ * Description: This plugin is used for testing functionality of Github updating of plugins.
+ * Version: 0.2.0
+ * Author: Andy Fragen
+ * License: MIT
+ * Requires WP: 6.6
+ * Requires PHP: 8.0
+ * Update URI: https://git-updater.com
+ */
+
+ /**
+ * Exit if called directly.
+ */
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+require_once __DIR__ . '/vendor/afragen/git-updater-lite/Lite.php';
+( new \Fragen\Git_Updater\Lite( __FILE__ ) )->run();
+```
 
 FWIW, I test by decreasing the version number locally to see an update.

@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30e91453ea052917f3e631f8c128e74a",
+    "content-hash": "a9c81a6df49f7dedaf5ad307a8507470",
     "packages": [
         {
             "name": "afragen/git-updater-lite",
-            "version": "1.5.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/git-updater-lite.git",
-                "reference": "7f0fd72444e86e588705f4fc340599739beaa69a"
+                "reference": "ae2232c2bc0b5ad705cf6278491d3aa58aa84c21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/7f0fd72444e86e588705f4fc340599739beaa69a",
-                "reference": "7f0fd72444e86e588705f4fc340599739beaa69a",
+                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/ae2232c2bc0b5ad705cf6278491d3aa58aa84c21",
+                "reference": "ae2232c2bc0b5ad705cf6278491d3aa58aa84c21",
                 "shasum": ""
             },
             "require": {
@@ -50,9 +50,9 @@
             ],
             "support": {
                 "issues": "https://github.com/afragen/git-updater-lite/issues",
-                "source": "https://github.com/afragen/git-updater-lite/tree/1.5.0"
+                "source": "https://github.com/afragen/git-updater-lite/tree/2.0.0"
             },
-            "time": "2025-02-01T15:52:49+00:00"
+            "time": "2025-02-11T23:54:32+00:00"
         }
     ],
     "packages-dev": [],
