@@ -81,7 +81,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				return;
 			}
 
-			if ( null === $this->update_server ) {
+			if ( empty( $this->update_server ) ) {
 				return new \WP_Error( 'no_domain', 'No update server domain' );
 			}
 			$url      = "$this->update_server/wp-json/git-updater/v1/update-api/?slug=$this->slug";
@@ -234,20 +234,15 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				'update-supported'    => true,
 				'requires'            => $this->api_data->requires,
 				'requires_php'        => $this->api_data->requires_php,
+				'new_version'         => $this->api_data->version,
+				'package'             => $this->api_data->download_link,
+				'tested'              => $this->api_data->tested,
 			);
 			if ( 'theme' === $this->api_data->type ) {
 				$response['theme_uri'] = $response['url'];
 			}
 
 			if ( version_compare( $this->api_data->version, $this->local_version, '>' ) ) {
-				$response_api_checked        = array(
-					'new_version'  => $this->api_data->version,
-					'package'      => $this->api_data->download_link,
-					'tested'       => $this->api_data->tested,
-					'requires'     => $this->api_data->requires,
-					'requires_php' => $this->api_data->requires_php,
-				);
-				$response                    = array_merge( $response, $response_api_checked );
 				$response                    = 'plugin' === $this->api_data->type ? (object) $response : $response;
 				$key                         = 'plugin' === $this->api_data->type ? $this->api_data->file : $this->api_data->slug;
 				$transient->response[ $key ] = $response;
@@ -286,7 +281,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		 *
 		 * @param array $prepared_themes Array of prepared themes.
 		 *
-		 * @return mixed
+		 * @return array
 		 */
 		public function customize_theme_update_html( $prepared_themes ) {
 			$theme = $this->api_data;
@@ -310,6 +305,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		 * @author Seth Carstens
 		 *
 		 * @access protected
+		 * @codeCoverageIgnore
 		 *
 		 * @param \stdClass $theme Theme object.
 		 *

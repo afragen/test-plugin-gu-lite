@@ -8,20 +8,25 @@
     "packages": [
         {
             "name": "afragen/git-updater-lite",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/git-updater-lite.git",
-                "reference": "ae2232c2bc0b5ad705cf6278491d3aa58aa84c21"
+                "reference": "b9bda5f9d387823d77d9be210a00d686f607e4cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/ae2232c2bc0b5ad705cf6278491d3aa58aa84c21",
-                "reference": "ae2232c2bc0b5ad705cf6278491d3aa58aa84c21",
+                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/b9bda5f9d387823d77d9be210a00d686f607e4cf",
+                "reference": "b9bda5f9d387823d77d9be210a00d686f607e4cf",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "3.10.3",
+                "wp-coding-standards/wpcs": "~3.1.0",
+                "yoast/phpunit-polyfills": "^1.1.0"
             },
             "type": "library",
             "autoload": {
@@ -50,9 +55,15 @@
             ],
             "support": {
                 "issues": "https://github.com/afragen/git-updater-lite/issues",
-                "source": "https://github.com/afragen/git-updater-lite/tree/2.0.0"
+                "source": "https://github.com/afragen/git-updater-lite/tree/2.1.0"
             },
-            "time": "2025-02-11T23:54:32+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/afragen",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-02-20T22:19:54+00:00"
         }
     ],
     "packages-dev": [],
