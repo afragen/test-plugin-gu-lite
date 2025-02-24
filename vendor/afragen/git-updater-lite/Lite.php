@@ -92,6 +92,15 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		public function run() {
 			global $pagenow;
 
+			// Needed for mu-plugin.
+			if ( ! isset( $pagenow ) ) {
+				$php_self = isset( $_SERVER['PHP_SELF'] ) ? sanitize_url( wp_unslash( $_SERVER['PHP_SELF'] ) ) : null;
+				if ( null !== $php_self ) {
+					// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+					$pagenow = basename( $php_self );
+				}
+			}
+
 			// Only run on the following pages.
 			$pages            = array( 'update-core.php', 'update.php', 'plugins.php', 'themes.php' );
 			$view_details     = array( 'plugin-install.php', 'theme-install.php' );
