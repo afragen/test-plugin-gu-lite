@@ -61,7 +61,26 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				)
 			);
 			$this->local_version = $file_data['Version'];
-			$this->update_server = $file_data['UpdateURI'];
+			$this->update_server = $this->check_update_uri( $file_data['UpdateURI'] );
+		}
+
+		/**
+		 * Ensure properly formatted Update URI.
+		 *
+		 * @param string $updateUri Data from Update URI header.
+		 *
+		 * @return string|\WP_Error
+		 */
+		private function check_update_uri( $updateUri ) {
+			if ( filter_var( $updateUri, FILTER_VALIDATE_URL )
+				&& null === parse_url( $updateUri, PHP_URL_PATH ) // null means no path is present.
+			) {
+				$updateUri = untrailingslashit( trim( $updateUri ) );
+			} else {
+				return new \WP_Error( 'invalid_header_data', 'Invalid data from Update URI header', $updateUri );
+			}
+
+			return $updateUri;
 		}
 
 		/**
@@ -81,8 +100,8 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				return;
 			}
 
-			if ( empty( $this->update_server ) ) {
-				return new \WP_Error( 'no_domain', 'No update server domain' );
+			if ( empty( $this->update_server ) || is_wp_error( $this->update_server ) ) {
+				return new \WP_Error( 'invalid_domain', 'Invalid update server domain', $this->update_server );
 			}
 			$url      = "$this->update_server/wp-json/git-updater/v1/update-api/?slug=$this->slug";
 			$response = get_site_transient( "git-updater-lite_{$this->file}" );
@@ -102,7 +121,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				* Set transient for 5 minutes as AWS sets 5 minute timeout
 				* for release asset redirect.
 				*
-				* Set limited timeout so wp_remote_get() not hit as frequently.
+				* Set limited timeout so wp_remote_post() not hit as frequently.
 				* wp_remote_post() for plugin/theme check can run on every pageload
 				* for certain pages.
 				*/
@@ -149,9 +168,11 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		 * @param \Plugin_Upgrader|\Theme_Upgrader $upgrader      An Upgrader object.
 		 * @param array                            $hook_extra    Array of hook data.
 		 *
+		 * @throws \TypeError If the type of $upgrader is not correct.
+		 *
 		 * @return string|\WP_Error
 		 */
-		public function upgrader_source_selection( string $source, string $remote_source, \Plugin_Upgrader|\Theme_Upgrader $upgrader, $hook_extra = null ) {
+		public function upgrader_source_selection( string $source, string $remote_source, $upgrader, $hook_extra = null ) {
 			global $wp_filesystem;
 
 			$new_source = $source;
@@ -159,6 +180,11 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 			// Exit if installing.
 			if ( isset( $hook_extra['action'] ) && 'install' === $hook_extra['action'] ) {
 				return $source;
+			}
+
+			// TODO: add type hint for $upgrader, PHP 8 minimum due to `|`.
+			if ( ! $upgrader instanceof \Plugin_Upgrader && ! $upgrader instanceof \Theme_Upgrader ) {
+				throw new \TypeError( __METHOD__ . '(): Argument #3 ($upgrader) must be of type Plugin_Upgrader|Theme_Upgrader, ' . esc_attr( gettype( $upgrader ) ) . ' given.' );
 			}
 
 			// Rename plugins.

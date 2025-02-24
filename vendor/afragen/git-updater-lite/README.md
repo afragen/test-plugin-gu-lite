@@ -3,7 +3,7 @@
 * Contributors: [Andy Fragen](https://github.com/afragen)
 * Tags: plugin, theme, updater, git-updater
 * Requires at least: 6.6
-* Requires PHP: 8.0
+* Requires PHP: 7.4
 * Donate link: <https://thefragens.com/git-updater-donate>
 * License: MIT
 
@@ -11,7 +11,7 @@ A simple standalone library to enable automatic updates to your git hosted WordP
 
 ## Description
 
-**This is version 2.0.0 and contains a breaking change from 1.5.x.**
+**This is version 2.x and contains a breaking change from 1.5.x.**
 
 This library was designed to be added to your git hosted plugin or theme to enable standalone updates. 
 
@@ -53,7 +53,7 @@ An example integrated plugin is here, https://github.com/afragen/test-plugin-gu-
  * Author: Andy Fragen
  * License: MIT
  * Requires WP: 6.6
- * Requires PHP: 8.0
+ * Requires PHP: 7.4
  * Update URI: https://git-updater.com
  */
 
