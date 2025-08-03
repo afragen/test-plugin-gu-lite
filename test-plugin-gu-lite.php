@@ -3,7 +3,7 @@
  * Plugin Name: Test Plugin Git Updater Lite
  * Plugin URI: https://github.com/afragen/test-plugin-gu-lite/
  * Description: This plugin is used for testing functionality of Github updating of plugins.
- * Version: 0.2.5
+ * Version: 0.2.6
  * Author: Andy Fragen
  * License: MIT
  * Requires WP: 6.6
