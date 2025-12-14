@@ -8,25 +8,24 @@
     "packages": [
         {
             "name": "afragen/git-updater-lite",
-            "version": "2.3.7",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/git-updater-lite.git",
-                "reference": "55862c61899f82d66863f22fe207a7784be8b213"
+                "reference": "44505a74754d5b0b42c3eef00d5bb4477b222a35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/55862c61899f82d66863f22fe207a7784be8b213",
-                "reference": "55862c61899f82d66863f22fe207a7784be8b213",
+                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/44505a74754d5b0b42c3eef00d5bb4477b222a35",
+                "reference": "44505a74754d5b0b42c3eef00d5bb4477b222a35",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.4"
             },
             "require-dev": {
-                "squizlabs/php_codesniffer": "3.10.3",
-                "wp-coding-standards/wpcs": "~3.1.0",
-                "yoast/phpunit-polyfills": "^1.1.0"
+                "wp-coding-standards/wpcs": "^3",
+                "yoast/phpunit-polyfills": "*"
             },
             "type": "library",
             "autoload": {
@@ -48,14 +47,13 @@
             ],
             "description": "A simple class to integrate with Git Updater for standalone plugin/theme updates.",
             "keywords": [
-                "plugin",
-                "theme",
+                "package",
                 "updater",
                 "wordpress"
             ],
             "support": {
                 "issues": "https://github.com/afragen/git-updater-lite/issues",
-                "source": "https://github.com/afragen/git-updater-lite/tree/2.3.7"
+                "source": "https://github.com/afragen/git-updater-lite/tree/2.5.0"
             },
             "funding": [
                 {
@@ -63,7 +61,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-03T00:27:41+00:00"
+            "time": "2025-12-14T22:38:56+00:00"
         }
     ],
     "packages-dev": [],
@@ -74,5 +72,5 @@
     "prefer-lowest": false,
     "platform": {},
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
