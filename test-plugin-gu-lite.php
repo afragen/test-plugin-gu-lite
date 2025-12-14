@@ -18,5 +18,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+add_filter( 'git_updater_lite_transient_timeout', fn() => 12 * HOUR_IN_SECONDS );
 require_once __DIR__ . '/vendor/afragen/git-updater-lite/Lite.php';
 ( new \Fragen\Git_Updater\Lite( __FILE__ ) )->run();
