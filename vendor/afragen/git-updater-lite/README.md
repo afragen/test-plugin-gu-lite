@@ -28,7 +28,9 @@ The REST endpoint format is as follows.
 * plugins - `https://my-site.com/wp-json/git-updater/v1/update-api/?slug=my-plugin`
 * themes - `https://my-site.com/wp-json/git-updater/v1/update-api/?slug=my-theme`
 
-Version 3.0.0 works better with repositories requiring authentication headers using a 2-step process and not exposing the authentication header. It can also be set in Git Updater to use domain validation.
+Version 3.0.0 works better with repositories requiring authentication headers using a 2-step process and not exposing the authentication header.
+
+Version 3.2.0 replaces the earlier `X-GU-Site-Domain` header with a per-site **client key**. When the client first needs a **private** package it generates a key locally and sends it as `X-GU-Lite-Key` (with a display-only `X-GU-Client-Label`). The update server lists the client as pending; an administrator approves it once on the server's **Lite Clients** tab. Public packages never send a key and need no configuration. Older clients that send `X-GU-Site-Domain` are no longer recognized by a current server; see the Git Updater docs for the rollout order.
 
 ## Installation
 

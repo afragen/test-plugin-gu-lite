@@ -132,8 +132,33 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 				 * @param string $slug The plugin/theme slug
 				 */
 				$url      = apply_filters( 'git_updater_lite_api_url', $url, $this->slug );
-				$response = wp_remote_get( $url );
-				if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
+				$response = wp_remote_get( $url, $this->get_api_request_args() );
+				if ( is_wp_error( $response ) ) {
+					return $response;
+				}
+
+				$status_code = wp_remote_retrieve_response_code( $response );
+				if ( 200 !== $status_code ) {
+					// A 403 here means the update server withholds this package from
+					// this site (private package with no authorized domain). Surface
+					// the server message instead of failing silently.
+					if ( 403 === $status_code ) {
+						$body       = json_decode( wp_remote_retrieve_body( $response ), true );
+						$server_msg = $body['message'] ?? 'Access denied.';
+
+						// A private package marks this slug and mints a client key, so the
+						// next request presents it for approval.
+						if ( isset( $body['code'] ) && 'gu_private_package' === $body['code'] ) {
+							$this->mark_private_slug( $this->slug );
+							$this->generate_client_key();
+						}
+
+						return new WP_Error(
+							'gu_update_blocked',
+							sprintf( 'Update blocked: %s', esc_html( $server_msg ) )
+						);
+					}
+
 					return $response;
 				}
 
@@ -186,12 +211,7 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 						return false;
 					}
 
-					$args = [
-						'timeout' => 15,
-						'headers' => [
-							'X-GU-Site-Domain' => $this->get_site_domain(),
-						],
-					];
+					$args = $this->get_api_request_args();
 
 					$response    = wp_remote_get( $package, $args );
 					$status_code = wp_remote_retrieve_response_code( $response );
@@ -206,6 +226,12 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 								'Update blocked: %s',
 								esc_html( $server_msg )
 							);
+
+							$code = $body['code'] ?? '';
+							if ( in_array( $code, [ 'gu_private_package', 'gu_unauthorized_domain' ], true ) ) {
+								$this->mark_private_slug( $this->slug );
+								$this->generate_client_key();
+							}
 						}
 
 						return new WP_Error( 'gu_token_fetch_failed', $error_msg );
@@ -381,12 +407,105 @@ if ( ! class_exists( 'Fragen\\Git_Updater\\Lite' ) ) {
 		}
 
 		/**
-		 * Get the site domain for optional validation.
+		 * Client key for private-package access.
+		 *
+		 * A constant or filter can pre-set the key; otherwise the locally stored
+		 * (self-generated) key is returned, or an empty string when none exists yet.
 		 *
 		 * @return string
 		 */
-		private function get_site_domain(): string {
-			return sanitize_text_field( parse_url( home_url(), PHP_URL_HOST ) );
+		private function get_client_key(): string {
+			if ( defined( 'GIT_UPDATER_LITE_CLIENT_KEY' ) ) {
+				return sanitize_text_field( (string) GIT_UPDATER_LITE_CLIENT_KEY );
+			}
+
+			/**
+			 * Filter to pre-set the lite client key.
+			 *
+			 * @param string $key Client key.
+			 */
+			$key = apply_filters( 'git_updater_lite_client_key', '' );
+			if ( is_string( $key ) && '' !== $key ) {
+				return sanitize_text_field( $key );
+			}
+
+			return sanitize_text_field( (string) get_site_option( 'git_updater_lite_client_key', '' ) );
+		}
+
+		/**
+		 * Generate and persist a client key if none exists.
+		 *
+		 * Only called when a private package is encountered, so a client that
+		 * uses only public packages never creates a key.
+		 *
+		 * @return string
+		 */
+		private function generate_client_key(): string {
+			$key = $this->get_client_key();
+			if ( '' !== $key ) {
+				return $key;
+			}
+
+			$key = bin2hex( random_bytes( 32 ) );
+			update_site_option( 'git_updater_lite_client_key', $key );
+
+			return $key;
+		}
+
+		/**
+		 * Whether a slug has been seen as a private package.
+		 *
+		 * @param string $slug Package slug.
+		 * @return bool
+		 */
+		private function is_private_slug( string $slug ): bool {
+			return in_array( $slug, (array) get_site_option( 'git_updater_lite_private_slugs', [] ), true );
+		}
+
+		/**
+		 * Record a slug as a private package.
+		 *
+		 * @param string $slug Package slug.
+		 * @return void
+		 */
+		private function mark_private_slug( string $slug ) {
+			$slugs = (array) get_site_option( 'git_updater_lite_private_slugs', [] );
+			if ( ! in_array( $slug, $slugs, true ) ) {
+				$slugs[] = $slug;
+				update_site_option( 'git_updater_lite_private_slugs', $slugs );
+			}
+		}
+
+		/**
+		 * Display-only label identifying this site to the server.
+		 *
+		 * @return string
+		 */
+		private function get_site_label(): string {
+			return sanitize_text_field( parse_url( home_url(), PHP_URL_HOST ) . ' (' . get_bloginfo( 'name' ) . ')' );
+		}
+
+		/**
+		 * Request args for update server calls.
+		 *
+		 * For packages known to be private, identifies this site to the server
+		 * with an approved client key (X-GU-Lite-Key) and a display-only label.
+		 * Public packages carry neither header.
+		 *
+		 * @return array<string, mixed>
+		 */
+		private function get_api_request_args(): array {
+			$headers = [];
+			$key     = $this->get_client_key();
+			if ( '' !== $key && $this->is_private_slug( $this->slug ) ) {
+				$headers['X-GU-Lite-Key']     = $key;
+				$headers['X-GU-Client-Label'] = $this->get_site_label();
+			}
+
+			return [
+				'timeout' => 15,
+				'headers' => $headers,
+			];
 		}
 
 		/**

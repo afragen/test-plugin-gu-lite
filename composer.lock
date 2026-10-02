@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "afragen/git-updater-lite",
-            "version": "3.0.2",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/afragen/git-updater-lite.git",
-                "reference": "f761d346ef1961fc7c08c087157e39cf6e98c32b"
+                "reference": "91d3f39b9a7bf04ee8c17569611ac1bc68ce6e21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/f761d346ef1961fc7c08c087157e39cf6e98c32b",
-                "reference": "f761d346ef1961fc7c08c087157e39cf6e98c32b",
+                "url": "https://api.github.com/repos/afragen/git-updater-lite/zipball/91d3f39b9a7bf04ee8c17569611ac1bc68ce6e21",
+                "reference": "91d3f39b9a7bf04ee8c17569611ac1bc68ce6e21",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
             ],
             "support": {
                 "issues": "https://github.com/afragen/git-updater-lite/issues",
-                "source": "https://github.com/afragen/git-updater-lite/tree/3.0.2"
+                "source": "https://github.com/afragen/git-updater-lite/tree/3.2.0"
             },
             "funding": [
                 {
@@ -61,7 +61,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-06-05T00:36:08+00:00"
+            "time": "2026-10-02T22:45:48+00:00"
         }
     ],
     "packages-dev": [],
