@@ -32,6 +32,8 @@ Version 3.0.0 works better with repositories requiring authentication headers us
 
 Version 3.2.0 replaces the earlier `X-GU-Site-Domain` header with a per-site **client key**. When the client first needs a **private** package it generates a key locally and sends it as `X-GU-Lite-Key` (with a display-only `X-GU-Client-Label`). The update server lists the client as pending; an administrator approves it once on the server's **Lite Clients** tab. Public packages never send a key and need no configuration. Older clients that send `X-GU-Site-Domain` are no longer recognized by a current server; see the Git Updater docs for the rollout order.
 
+Version 3.3.0 detects `is_private` on a successful response and generates the key proactively, instead of waiting for a 403. This lets a site identify itself for approval before enforcement.
+
 ## Installation
 
 Add via composer. `composer require afragen/git-updater-lite:^3`
@@ -71,5 +73,47 @@ if ( ! defined( 'WPINC' ) ) {
 require_once __DIR__ . '/vendor/afragen/git-updater-lite/Lite.php';
 ( new \Fragen\Git_Updater\Lite( __FILE__ ) )->run();
 ```
+
+## Private packages and legacy clients
+
+A Lite client that sends `X-GU-Lite-Key` keeps working with private packages once its key is
+approved. If a consuming plugin or theme cannot be updated to Lite 3.2.0 or newer, deploy the
+shim instead of disabling the server gate:
+
+1. Generate a random 256-bit key for the site.
+2. Copy `mu/git-updater-lite-key-shim.php` to the site's `wp-content/mu-plugins/` directory.
+3. Define the key in `wp-config.php`:
+
+   ```php
+   define( 'GIT_UPDATER_LITE_SHIM_KEY', 'the-per-site-key' );
+   ```
+
+4. Approve the pending client on the update server's **Lite Clients** tab (or pre-approve the
+   key with the server-side `git_updater_lite_client_key` filter).
+5. Verify a private update succeeds.
+
+The shim adds `X-GU-Lite-Key` and `X-GU-Client-Label` to both the `update-api` and
+`download-token` requests. The key is filterable, so a per-site provisioning layer can set it
+without a constant:
+
+```php
+add_filter( 'git_updater_lite_shim_key', fn() => 'the-per-site-key' );
+```
+
+Do not authorize a legacy client by domain or IP instead — those are self-asserted or brittle
+and reopen the anonymous-download vulnerability. See the Git Updater
+`docs/private-package-rollout.md` for the full rollout order.
+
+## Caching
+
+The update API response for each plugin/theme is cached for 6 hours in the
+`git-updater-lite_{$file}` site transient. Change the timeout with the
+`git_updater_lite_transient_timeout` filter.
+
+To refresh sooner, for example right after publishing a new release, go to **Dashboard → Updates**
+and click **Check again**. The cached data is discarded and refetched for users who can update the
+package's type (`update_plugins` for plugins, `update_themes` for themes), throttled to once per
+minute per package. If the refetch fails, the cached data is kept. It fetches the update server's
+current cached data; it does not make the update server re-check the git host.
 
 FWIW, I test by decreasing the version number locally to see an update.

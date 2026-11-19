@@ -4,6 +4,8 @@
 .gitignore export-ignore
 .editorconfig export-ignore
 composer.lock export-ignore
+package-lock.json export-ignore
+phpcs.xml.dist export-ignore
 phpunit.xml export-ignore
 phpcs.xml export-ignore
 phpcs.xml.dist export-ignore

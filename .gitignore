@@ -3,4 +3,10 @@
 .vscode
 
 /vendor/*
-!/vendor/afragen
+!/vendor/afragen/
+vendor/afragen/git-updater-lite/.commandcode/
+vendor/afragen/git-updater-lite/node_modules/
+
+vendor/afragen/git-updater-lite/.wp-env.json
+
+vendor/afragen/git-updater-lite/package-lock.json
